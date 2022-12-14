@@ -1,0 +1,10 @@
+domainName: your-project-rd-dev.example.com
+notificationEmail: admin-dev@example.com
+logsRestApiAccessLogging: true # Optional configuration which enables or disables access logging. Defaults to true.
+logsRestApiExecutionLogging: true # Optional configuration which enables or disables execution logging. Defaults to true.
+logsRestApiLevel: INFO # Optional configuration which specifies the log level to use for execution logging. May be set to either INFO or ERROR.
+logsRestApiFullExecutionData: true # Optional configuration which specifies whether or not to log full requests/responses for execution logging. Defaults to true.
+debugLogEnabled: true
+
+appMemorySize: 128 # MB
+

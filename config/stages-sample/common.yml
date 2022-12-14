@@ -1,0 +1,6 @@
+service: 'your-project'
+awsAccountId: 'Your-AWS-Acconnt-ID'
+defaultRegion: 'us-east-1'
+deploymentBucketName: 'your-serverless-deployment'
+cmsService: 'your-cms-project'
+

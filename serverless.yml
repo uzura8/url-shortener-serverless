@@ -1,0 +1,125 @@
+service: ${file(./config/stages/common.yml):service}
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-prune-plugin
+  - serverless-domain-manager
+  - serverless-api-gateway-throttling
+  - serverless-plugin-lambda-insights
+  #- serverless-plugin-aws-alerts
+  #- serverless-associate-waf
+
+custom:
+  defaultStage: dev
+  prjPrefix: ${self:service}-${self:provider.stage}
+  stageConfigFileName: ./config/stages/${self:provider.stage}.yml
+  awsAccontId: ${file(./config/stages/common.yml):awsAccountId}
+  wsgi:
+    app: app/handler.app
+    packRequirements: false
+    pythonBin: python3
+  pythonRequirements:
+    dockerizePip: non-linux
+  deploymentBucket:
+    versioning: true
+    accelerate: true
+    blockPublicAccess: true
+  prune:
+    automatic: true
+    number: 5
+  customDomain:
+    domainName: ${file(${self:custom.stageConfigFileName}):domainName}
+    stage: ${self:provider.stage}
+    basePath: ''
+    certificateName: ${self:custom.customDomain.domainName}
+    createRoute53Record: true
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+  apiGatewayThrottling:
+    maxRequestsPerSecond: 100
+    maxConcurrentRequests: 100
+  lambdaInsights:
+    defaultLambdaInsights: true #enables Lambda Insights for all functions
+  alerts:
+    stages:
+      - dev
+      - prd
+    topics:
+      alarm:
+        topic: ${self:custom.prjPrefix}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: ${file(${self:custom.stageConfigFileName}):notificationEmail}
+      #ok:
+      #  topic: ${self:custom.prjPrefix}-alerts-ok
+    alarms:
+      - functionErrors
+      - functionThrottles
+    definitions:
+      functionErrors:
+        period: 60
+  #associateWaf:
+  #  name: web-api-acl # If need to use WAF, create WebACL named "web-api-acl". If not create, ignore this.
+  #  version: V2 #(optional) Regional | V2
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, self:custom.defaultStage}
+  region: ${file(./config/stages/common.yml):defaultRegion}
+  endpointType: REGIONAL
+  iam:
+    role:
+      statements: ${file(./config/iam-role-statements.yml)}
+  deploymentBucket:
+    name: ${file(./config/stages/common.yml):deploymentBucketName}
+    serverSideEncryption: AES256
+  logs:
+    restApi:
+      accessLogging: ${file(${self:custom.stageConfigFileName}):logsRestApiAccessLogging}
+      executionLogging: ${file(${self:custom.stageConfigFileName}):logsRestApiExecutionLogging}
+      level: ${file(${self:custom.stageConfigFileName}):logsRestApiLevel}
+      fullExecutionData: ${file(${self:custom.stageConfigFileName}):logsRestApiFullExecutionData}
+  logRetentionInDays: 14
+  environment:
+    PRJ_PREFIX: ${self:custom.prjPrefix}
+    CMS_PRJ_PREFIX: ${file(./config/stages/common.yml):cmsService}-${self:provider.stage}
+    APP_ROOT: /${self:custom.customDomain.basePath}
+    DEBUG_LOG_ENABLED: ${file(${self:custom.stageConfigFileName}):debugLogEnabled}
+
+package:
+  exclude:
+    - node_modules/**
+    - config/stages-sample/**
+    - config-bkup_*
+    - LICENSE
+    - README.md
+    - tags
+    - .venv/**
+    - __pycache__
+    - package-lock.json
+    - .DS_Store
+    - .babelrc
+    - .browserslistrc
+    - .dynamodb/**
+    - .eslintrc.js
+    - .git/**
+    - .gitignore
+    - .github/**
+    - .prettierrc.json
+    - src/**
+    - public/**
+    - webpackConfigs/**
+    - develop/**
+    - terraform/**
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    memorySize: ${file(${self:custom.stageConfigFileName}):appMemorySize}
+    events:
+      - http: ANY /
+      - http: ANY /{proxy+}
+    provisionedConcurrency: 2

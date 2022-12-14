@@ -1,0 +1,22 @@
+{
+  "name": "url-shortener-serverless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Shingo Yamada <uzuranoie@gmail.com> (https://github.com/uzura8)",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^3.25.1",
+    "serverless-api-gateway-throttling": "^2.0.2",
+    "serverless-deployment-bucket": "^1.6.0",
+    "serverless-domain-manager": "^6.2.1",
+    "serverless-plugin-lambda-insights": "^1.6.0",
+    "serverless-prune-plugin": "^2.0.1",
+    "serverless-python-requirements": "^6.0.0",
+    "serverless-wsgi": "^3.0.1"
+  }
+}

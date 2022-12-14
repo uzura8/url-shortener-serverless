@@ -1,0 +1,60 @@
+# OS file
+*~
+*.bak
+.DS_Store
+Thumbs.db
+
+# IDE user config
+.vscode/
+.idea/
+.vs/
+.buildpath
+.project
+.settings
+*.tmproj
+desktop.ini
+nbproject/
+tags
+
+# npm
+node_modules/
+/package-lock.json
+.env
+.yarn
+
+# Python
+.venv
+__pycache__
+
+# Logs
+yarn-error.log
+npm-debug.log
+lerna-debug.log
+
+# Istanbul coverage
+coverage/
+
+# cypress
+cypress/screenshots
+cypress/videos
+
+.vercel
+.now
+
+# Terraform
+/terraform/.terraform
+/terraform/.terraform.lock.hcl
+/terraform/.terraform.tfstate.lock.info
+/terraform/terraform.tfvars
+/terraform/terraform.tfstate*
+
+# serverless
+/.serverless
+/.serverless-wsgi
+/serverless_wsgi.py
+/wsgi_handler.py
+/config/stages/*
+/config-bkup*
+
+/develop/env.sh
+/develop/var/*
