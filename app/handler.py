@@ -61,5 +61,5 @@ def main(url_id):
     if not shorten_url:
         raise InvalidUsage('Not Found', 404)
 
-    return redirect(shorten_url['url'])
+    return redirect(shorten_url['locationTo'])
     #return 'location to: ' + shorten_url['url']
