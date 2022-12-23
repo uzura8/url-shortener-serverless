@@ -1,5 +1,6 @@
 variable "prj_prefix" {}
 variable "region_api" {}
+variable "region_acm" {}
 variable "route53_zone_id" {}
 variable "domain_api_dev" {}
 variable "domain_api_prd" {}
@@ -7,6 +8,11 @@ variable "domain_api_prd" {}
 provider "aws" {
   region = var.region_api
   alias  = "api"
+}
+
+provider "aws" {
+  region = var.region_acm
+  alias  = "acm"
 }
 
 terraform {
@@ -29,7 +35,7 @@ locals {
 
 
 resource "aws_acm_certificate" "api_dev" {
-  provider          = aws.api
+  provider          = aws.acm
   domain_name       = local.fqdn.api_dev
   validation_method = "DNS"
 
@@ -39,7 +45,7 @@ resource "aws_acm_certificate" "api_dev" {
   }
 }
 resource "aws_acm_certificate" "api_prd" {
-  provider          = aws.api
+  provider          = aws.acm
   domain_name       = local.fqdn.api_prd
   validation_method = "DNS"
 
@@ -84,12 +90,12 @@ resource "aws_route53_record" "api_prd_acm_c" {
 
 ## Related ACM Certification and CNAME record
 resource "aws_acm_certificate_validation" "api_dev" {
-  provider                = aws.api
+  provider                = aws.acm
   certificate_arn         = aws_acm_certificate.api_dev.arn
   validation_record_fqdns = [for record in aws_route53_record.api_dev_acm_c : record.fqdn]
 }
 resource "aws_acm_certificate_validation" "api_prd" {
-  provider                = aws.api
+  provider                = aws.acm
   certificate_arn         = aws_acm_certificate.api_prd.arn
   validation_record_fqdns = [for record in aws_route53_record.api_prd_acm_c : record.fqdn]
 }

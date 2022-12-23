@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 #### Create AWS S3 Bucket for terraform state and frontend config
 
-Create S3 Buckets like below in us-east-1 region
+Create S3 Buckets like below in ap-northeast-1 region
 
 * __your-serverless-deployment__
     + Store deployment state files by terraformand and serverless framework
@@ -77,7 +77,7 @@ domain_api_dev  = "your-domain-dev.example.com"
 ```bash
 export AWS_SDK_LOAD_CONFIG=1
 export AWS_PROFILE=your-aws-profile-name
-export AWS_REGION="us-east-1"
+export AWS_REGION="ap-northeast-1"
 ```
 
 #### 3. Execute terraform init
@@ -85,7 +85,7 @@ export AWS_REGION="us-east-1"
 Command Example to init
 
 ```bash
-terraform init -backend-config="bucket=your-serverless-deployment" -backend-config="key=terraform/your-project/terraform.tfstate" -backend-config="region=us-east-1" -backend-config="profile=your-aws-profile-name"
+terraform init -backend-config="bucket=your-serverless-deployment" -backend-config="key=terraform/your-project/terraform.tfstate" -backend-config="region=ap-northeast-1" -backend-config="profile=your-aws-profile-name"
 ```
 
 #### 4. Execute terraform apply
@@ -110,7 +110,7 @@ vi config/stages/*
 
 service: 'your-project-name'
 awsAccountId: 'your-aws-acconnt-id'
-defaultRegion: 'us-east-1'
+defaultRegion: 'ap-northeast-1'
 deploymentBucketName: 'your-serverless-deployment'
 cmsService: 'your-cms-project'
 ```
@@ -132,7 +132,7 @@ Execute below command
 ```bash
 export AWS_SDK_LOAD_CONFIG=1
 export AWS_PROFILE="your-profile-name"
-export AWS_REGION="us-east-1"
+export AWS_REGION="ap-northeast-1"
 
 sls create_domain # Deploy for dev
 ```
@@ -150,7 +150,7 @@ Execute below command
 ```bash
 export AWS_SDK_LOAD_CONFIG=1
 export AWS_PROFILE="your-profile-name"
-export AWS_REGION="us-east-1"
+export AWS_REGION="ap-northeast-1"
 
 sls deploy # Deploy for dev
 ```
