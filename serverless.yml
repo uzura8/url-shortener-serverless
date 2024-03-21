@@ -32,10 +32,10 @@ custom:
   customDomain:
     domainName: ${file(${self:custom.stageConfigFileName}):domainName}
     stage: ${self:provider.stage}
-    basePath: ''
+    basePath: ""
     certificateName: ${self:custom.customDomain.domainName}
     createRoute53Record: true
-    endpointType: 'regional'
+    endpointType: "regional"
     securityPolicy: tls_1_2
   apiGatewayThrottling:
     maxRequestsPerSecond: 100
@@ -66,7 +66,7 @@ custom:
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.12
   stage: ${opt:stage, self:custom.defaultStage}
   region: ${file(./config/stages/common.yml):defaultRegion}
   endpointType: REGIONAL

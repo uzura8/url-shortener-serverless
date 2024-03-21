@@ -2,7 +2,7 @@
 
 Constructed by
 
-* Serverside: Flask + Lambda + APIGateway (deploy by serverside framework)
+- Serverside: Flask + Lambda + APIGateway (deploy by serverside framework)
 
 ## Instration
 
@@ -10,9 +10,10 @@ Constructed by
 
 You need below
 
-* nodeJS >= v14.15.X
-* aws-cli >= 1.18.X
-* Terraform >= 0.14.5
+- Python = 3.12.X
+- NodeJS = 20.X
+- aws-cli = 1.29.X
+- Terraform = 1.7.2
 
 #### Install tools
 
@@ -20,12 +21,11 @@ Install serverless, python venv and terraform on mac
 
 ```bash
 # At project root dir
-npm install -g serverless
-python3 -m venv .venv
+python -m venv .venv
 
 brew install tfenv
-tfenv install 0.14.5
-tfenv use 0.14.5
+tfenv install 1.7.2
+tfenv use 1.7.2
 ```
 
 ### Install Packages
@@ -50,9 +50,9 @@ pip install -r requirements.txt
 
 Create S3 Buckets like below in ap-northeast-1 region
 
-* __your-serverless-deployment__
-    + Store deployment state files by terraformand and serverless framework
-    + Create directory "terraform/your-project-name"
+- **your-serverless-deployment**
+  - Store deployment state files by terraformand and serverless framework
+  - Create directory "terraform/your-project-name"
 
 #### 1. Edit Terraform config file
 
@@ -124,7 +124,6 @@ notificationEmail: admin@example.com
  ...
 ```
 
-
 ### Create Domains for API
 
 Execute below command
@@ -162,6 +161,7 @@ sls deploy --stage prd # Deploy for prod
 ```
 
 ## Development
+
 ### Local Development
 
 Install packages for development
@@ -194,7 +194,6 @@ sls wsgi serve
 
 Request [http://127.0.0.1:5000](http://127.0.0.1:5000/hoge)
 
-
 ## Destroy Resources
 
 Destroy for serverless resources
@@ -204,11 +203,10 @@ sls remove --stage Target-stage
 sls delete_domain --stage Target-stage
 ```
 
-Removed files in S3 Buckets named "your-domain.example.com-cloudfront-logs" and "your-domain.example.com" 
+Removed files in S3 Buckets named "your-domain.example.com-cloudfront-logs" and "your-domain.example.com"
 
 Destroy for static server resources by Terraform
 
 ```bash
 terraform destroy -auto-approve -var-file=./terraform.tfvars
 ```
-

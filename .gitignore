@@ -47,6 +47,7 @@ cypress/videos
 /terraform/.terraform.tfstate.lock.info
 /terraform/terraform.tfvars
 /terraform/terraform.tfstate*
+/terraform/var/*
 
 # serverless
 /.serverless
